@@ -5,11 +5,13 @@ import com.drf.bi.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
 @SpringBootApplication(exclude = RabbitAutoConfiguration.class)
+@Cacheable
 public class App {
     public static void main(String[] args) {
         if (args.length < 2) {
