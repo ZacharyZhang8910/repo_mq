@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0
+          http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>1.1</id>
+    <formats>
+        <!--设置assembly包文件格式-->
+        <format>tar.gz</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory> <!-- disable the creation of root's distribution dir in the archive -->
+
+    <fileSets>
+        <!-- config files -->
+        <fileSet>
+            <directory>${basedir}/src/main/resources</directory>
+            <!--设置文件权限-->
+            <fileMode>0644</fileMode>
+            <!--替换配置文件中参数变量为pom.xml中的值-->
+            <filtered>true</filtered>
+            <!--设置配置文件输出的外部文件夹-->
+            <outputDirectory>${file.separator}</outputDirectory>
+        </fileSet>
+        <!-- scripts -->
+        <fileSet>
+            <directory>${basedir}/src/main/bin</directory>
+            <includes>
+                <include>*.sh</include>
+                <include>*.bat</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <!--替换脚本中参数变量为pom.xml中的值-->
+            <filtered>true</filtered>
+            <!--设置项目相关脚本输出的外部文件夹-->
+            <outputDirectory>${file.separator}bin</outputDirectory>
+        </fileSet>
+        <!-- executable jar -->
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <!--设置项目jar以及项目依赖的第三方jar输出的外部文件夹-->
+            <outputDirectory>${file.separator}</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+                <!--注意此处是将项目依赖的第三方jar全部copy至assembly打包出来的目录中
+                如果没有此段，则lib目录是在target目录下，而不会存放于assembly打包的目录中-->
+                <include>/lib/*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+        </fileSet>
+    </fileSets>
+</assembly>

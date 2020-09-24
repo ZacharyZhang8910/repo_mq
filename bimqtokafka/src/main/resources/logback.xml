@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <property name="env" value="${app.env:-.}"/>
+    <property name="log_dir" value="${app.log.path:-.}"/>
+    <property name="log_file" value="${app.log.file:-.}"/>
+    <!--日志保存天数-->
+    <property name="maxHistory" value="14"/>
+    <!--单个日志文件大小-->
+    <property name="maxFileSize" value="100MB"/>
+
+    <!--定义日志文件输出位置-->
+    <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--当前记录日志文件-->
+        <file>${log_dir}/${env}/${log_file}.log</file>
+        <!--按天回滚-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--归档文件-->
+            <fileNamePattern>${log_dir}/%d{yyyy-MM-dd}/${env}/${log_file}-%i.log</fileNamePattern>
+            <!--日志最大的历史-->
+            <maxHistory>${maxHistory}</maxHistory>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>INFO</level>-->
+<!--            &lt;!&ndash;表示匹配该级别及以上&ndash;&gt;-->
+<!--            <onMatch>ACCEPT</onMatch>-->
+<!--            &lt;!&ndash;表示不匹配该级别以下的&ndash;&gt;-->
+<!--            <onMismatch>DENY</onMismatch>-->
+<!--        </filter>-->
+    </appender>
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %gray(%msg%n)
+            </pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="rollingFile"/>
+    </root>
+
+</configuration>
