@@ -85,4 +85,19 @@ public class LimitHandler {
             }
         }
     }
+
+    /**
+     * for test
+     *
+     * @param topic         topic
+     * @param subOrderInfos 子订单对象列表
+     */
+    public void testMessage(String topic, List<SubOrderInfo> subOrderInfos) {
+        Limit limit = appConfig.getLimit().get("street");
+        if (limit != null && limit.equals("1") && limit.getTopic().contains(topic)) {
+            for (SubOrderInfo subOrderInfo : subOrderInfos) {
+                System.out.println(subOrderInfo.getCusPayAmt());
+            }
+        }
+    }
 }
